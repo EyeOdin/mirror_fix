@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=Krita/PythonPlugin
+X-KDE-Library=mirror_fix
+X-Python-2-Compatible=false
+X-Krita-Manual=mirror_fix_manual.html
+Name=Mirror Fix
+Comment=Complementary function to correct symmetry errors
