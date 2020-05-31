@@ -33,83 +33,84 @@ class Mirror_Fix_Docker(DockWidget):
 
     # Function Operations
     def Mirror(self):
-        # Verify Context
-        cond = str(self.window.direction.currentText())
-        # Krita Instance Objects
-        ki = Krita.instance()
-        ad = ki.activeDocument()
-        # Read document size
-        width = ad.width()
-        height = ad.height()
-        # Read mirror Tool position
-        w2 = width / 2  # Center Width
-        h2 = height / 2  # Center Height
+        if ((self.canvas() is not None) and (self.canvas().view() is not None)):
+            # Verify Context
+            cond = str(self.window.direction.currentText())
+            # Krita Instance Objects
+            ki = Krita.instance()
+            ad = ki.activeDocument()
+            # Read document size
+            width = ad.width()
+            height = ad.height()
+            # Read mirror Tool position
+            w2 = width / 2  # Center Width
+            h2 = height / 2  # Center Height
 
-        # Force the Mirror Axis to Center
-        if (cond == "Left" or cond == "Right" or cond == "&Left" or cond == "&Right"):
-            ki.action('mirrorX-moveToCenter').trigger()
-        elif (cond == "Up" or cond == "Down" or cond == "&Up" or cond == "&Down"):
-            ki.action('mirrorY-moveToCenter').trigger()
+            # Force the Mirror Axis to Center
+            if (cond == "Left" or cond == "Right" or cond == "&Left" or cond == "&Right"):
+                ki.action('mirrorX-moveToCenter').trigger()
+            elif (cond == "Up" or cond == "Down" or cond == "&Up" or cond == "&Down"):
+                ki.action('mirrorY-moveToCenter').trigger()
 
-        # Is there a Selection from the User?
-        sel = ad.selection()
-        # Selection Sensitive
-        if sel == None:
-            # Create a Selection
-            if (cond == "Left" or cond == "&Left"):
-                xx = 0
-                yy = 0
-                ww = w2
-                hh = height
-                value = 255
-            elif (cond == "Right" or cond == "&Right"):
-                xx = w2
-                yy = 0
-                ww = w2
-                hh = height
-                value = 255
-            elif (cond == "Up" or cond == "&Up"):
-                xx = 0
-                yy = 0
-                ww = width
-                hh = h2
-                value = 255
-            elif (cond == "Down" or cond == "&Down"):
-                xx = 0
-                yy = h2
-                ww = width
-                hh = h2
-                value = 255
-            # Place Selection
-            ss = Selection()
-            ss.select(xx, yy, ww, hh, value)
-            ad.setSelection(ss)
+            # Is there a Selection from the User?
+            sel = ad.selection()
+            # Selection Sensitive
+            if sel == None:
+                # Create a Selection
+                if (cond == "Left" or cond == "&Left"):
+                    xx = 0
+                    yy = 0
+                    ww = w2
+                    hh = height
+                    value = 255
+                elif (cond == "Right" or cond == "&Right"):
+                    xx = w2
+                    yy = 0
+                    ww = w2
+                    hh = height
+                    value = 255
+                elif (cond == "Up" or cond == "&Up"):
+                    xx = 0
+                    yy = 0
+                    ww = width
+                    hh = h2
+                    value = 255
+                elif (cond == "Down" or cond == "&Down"):
+                    xx = 0
+                    yy = h2
+                    ww = width
+                    hh = h2
+                    value = 255
+                # Place Selection
+                ss = Selection()
+                ss.select(xx, yy, ww, hh, value)
+                ad.setSelection(ss)
 
-        # Actions
-        ki.action('duplicatelayer').trigger()
-        self.Wait()
+            # Actions
+            ki.action('duplicatelayer').trigger()
+            self.Wait()
 
-        ki.action('activateNextLayer').trigger()
-        self.Wait()
+            ki.action('activateNextLayer').trigger()
+            self.Wait()
 
-        ki.action('invert_selection').trigger()
-        self.Wait()
+            ki.action('invert_selection').trigger()
+            self.Wait()
 
-        ki.action('clear').trigger()
-        self.Wait()
+            ki.action('clear').trigger()
+            self.Wait()
 
-        ki.action('deselect').trigger()
-        self.Wait()
+            ki.action('deselect').trigger()
+            self.Wait()
 
-        # Mirror Image considering direction
-        if (cond == "Left" or cond == "Right" or cond == "&Left" or cond == "&Right"):
-            Krita.instance().action('mirrorNodeX').trigger()
-        elif (cond == "Up" or cond == "Down" or cond == "&Up" or cond == "&Down"):
-            Krita.instance().action('mirrorNodeY').trigger()
-        self.Wait()
+            # Mirror Image considering direction
+            if (cond == "Left" or cond == "Right" or cond == "&Left" or cond == "&Right"):
+                Krita.instance().action('mirrorNodeX').trigger()
+            elif (cond == "Up" or cond == "Down" or cond == "&Up" or cond == "&Down"):
+                Krita.instance().action('mirrorNodeY').trigger()
+            self.Wait()
 
-        ki.action('merge_layer').trigger()
-        self.Wait()
+            ki.action('merge_layer').trigger()
+            self.Wait()
 
     def Wait(self):
         Krita.instance().activeDocument().waitForDone()
